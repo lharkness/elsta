@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7 ng-app:elasticjs" lang="en" id="ng-app"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8 ng-app:elasticjs" lang="en" id="ng-app"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="en" ng-app="elasticjs"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" ng-app="elasticjs"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="Search based application built using ElasticSearch, elastic.js, and Angular.js">
+    <meta name="viewport" content="width=device-width">
+
+    <title>ELSTA</title>
+
+    <link rel="stylesheet" href="/_plugin/elsta/common/css/normalize.min.css">
+    <link rel="stylesheet" href="/_plugin/elsta/common/css/main.min.css">
+    <link rel="stylesheet" href="/_plugin/elsta/common/css/bootstrap.css">
+
+    <link rel="stylesheet" href="/_plugin/elsta/common/css/bootstrap-responsive.min.css">
+    <link rel="stylesheet" href="/_plugin/elsta/common/css/elasticjs.css">
+
+    <!-- project dependency libs -->
+    <script src="/_plugin/elsta/common/lib/modernizr-2.6.1.min.js"></script>
+    <script src="/_plugin/elsta/common/lib/underscore.min.js"></script>
+    <script src="/_plugin/elsta/common/lib/angular.min.js"></script>
+    <script src="/_plugin/elsta/dist/elastic.min.js"></script>
+    <script src="/_plugin/elsta/dist/elastic-angular-client.min.js"></script>
+    <!--script src='/_plugin/elsta/dist/ui-bootstrap-0.1.0.js'></script -->
+
+    <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.4.0.js"></script>
+
+    <!-- project specific files -->
+    <script src="/_plugin/elsta/js/app.js"></script>
+    <script src="/_plugin/elsta/js/services.js"></script>
+    <script src="/_plugin/elsta/js/controllers.js"></script>
+    <script src="/_plugin/elsta/js/filters.js"></script>
+    <script src="/_plugin/elsta/js/directives.js"></script>
+</head>
+
+<body ng-controller="SearchCtrl">
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container input-append">
+                <span class="brand">&nbsp;&nbsp;&nbsp;ELSTA <font size="2"><i>because everyone has issues</i></font></span>
+
+                <button ng-click="indexSampleDocs()" class="btn btn-inverse pull-right">Generate Sample Data</button>
+
+                <button ng-click="createIssue()" class="btn btn-inverse pull-right">Create Issue</button>
+
+                <input type="text" placeholder="who are you?" ng-model='currentUser' class='center pull-right'/>
+            </div>
+        </div>
+    </div>
+    <br/><br/></br><!-- this is pretty hokey -->
+    <div>
+    <tabset>
+        <tab heading='My Work'>
+            <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="doc in myWorkResults.hits.hits" ng-click='editIssue(doc)'>  
+                    <td>{{doc._source.description}}</td>
+                    <td>{{doc._source.status}}</td>
+                </tr>
+            </tbody>
+            </table>
+        </tab>
+        <tab heading='Issue Pool'>
+            <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="doc in issuePoolResults.hits.hits" ng-click='editIssue(doc)'>
+                    <td>{{doc._source.description}}</td>
+                    <td>{{doc._source.status}}</td>
+                </tr>
+            </tbody>
+        </tab> 
+    </tabset>
+          
+</body>
+</html>
