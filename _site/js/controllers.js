@@ -15,7 +15,7 @@ angular.module('elasticjs.controllers', [])
             .indices(index)
             .types(type);
 
-        $scope.currentUser = "Lee";
+        $scope.currentUser = "";
 
         $scope.myWorkResults = request
                 .query(ejs.QueryStringQuery('assignedTo:'+$scope.currentUser))
@@ -92,36 +92,11 @@ angular.module('elasticjs.controllers', [])
           });
         };
 
-
-        var createTemplate = '<div class="modal-header">'+
-          '<h3>Create Issue</h3>'+
-          '</div>'+
-          '<div class="modal-body">'+
-          '<p>Enter description: <input ng-model="description" /></p>'+
-          '</div>'+
-          '<div class="modal-footer">'+
-          '<button ng-click="close(description)" class="btn btn-primary" >Create Issue</button>'+
-          '</div>';
-
-          var editTemplate = '<div class="modal-header">'+
-          '<h3>Edit Issue</h3>'+
-          '</div>'+
-          '<div class="modal-body">'+
-          '<table><tr><td>Description</td><td><input type="text" id="description" ng-model="description" /></td></tr>' +
-          '<tr><td>Status</td><td><input type="text" id="status" ng-model="status" /></td></tr>'+
-          '<tr><td>Assignee</td><td><input type="text" id="assignedTo" ng-model="assignedTo" /></td></tr>'+
-          '</table>' +
-          '<input type="hidden" id="id" ng-model="id" />'+ 
-          '</div>'+
-          '<div class="modal-footer">'+
-          '<button ng-click="close(id,assignedTo,status,description)" class="btn btn-primary" >Save Changes</button>'+
-          '</div>';
-
         $scope.createOpts = {
           backdrop: true,
           keyboard: true,
           backdropClick: true,
-          template:  createTemplate, 
+          templateUrl:  'partials/createIssueTemplate.html', 
           controller: 'CreateDialogCtrl'
         };
 
@@ -129,7 +104,7 @@ angular.module('elasticjs.controllers', [])
           backdrop: true,
           keyboard: true,
           backdropClick: true,
-          template:  editTemplate, 
+          templateUrl:  'partials/editIssueTemplate.html', 
           controller: 'EditDialogCtrl',
           resolve: {
             description: function() {return $scope.description},

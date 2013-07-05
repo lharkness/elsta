@@ -12,13 +12,16 @@ angular.module('elasticjs', [
     'ui.bootstrap'
     ]).config(['$routeProvider', function($routeProvider) {
         $routeProvider
-            .when('/search', {
-                templateUrl: 'partials/search.html'
+            .when('/', {
+                templateUrl: 'index.html'
             })
-            .when('/results', {
-                templateUrl: 'partials/results.html' 
+            .when('/createIssueTemplate', {
+                templateUrl: 'partials/createIssueTemplate.html' 
+            })
+            .when('/editIssueTemplate', {
+                templateUrl: 'partials/editIssueTemplate.html' 
             })
             .otherwise({
-                redirectTo: '/search'
+                redirectTo: '/'
             });
   }]);
