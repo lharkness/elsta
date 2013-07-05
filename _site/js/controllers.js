@@ -110,19 +110,23 @@ angular.module('elasticjs.controllers', [])
             description: function() {return $scope.description},
             assignedTo: function() {return $scope.assignedTo},
             status: function() {return $scope.status},
-            id: function() {return $scope.id}
+            id: function() {return $scope.id},
+            dueDate: function() {return $scope.dueDate}
           }
         };
 
         $scope.createIssue = function(){
           var d = $dialog.dialog($scope.createOpts);
-          d.open().then(function(description){
-            if(description)
-            {
+          d.open().then(function(retObj){
+            if(retObj) {
+             
+              var description = retObj[0];
+              var dueDate = retObj[1];
               var doc = ejs.Document("issues", "defect").source({
               assignedTo: 'empty', 
               description: description,
-              status: 'open'});
+              status: 'open',
+              dueDate: dueDate});
 
               doc.refresh(true).doIndex(function() {
                 $scope.issuePoolResults = request
@@ -139,6 +143,13 @@ angular.module('elasticjs.controllers', [])
             $scope.assignedTo = issue._source.assignedTo;
             $scope.status = issue._source.status;
             $scope.id = issue._id;
+          
+            if (issue._source.dueDate == null) {
+              $scope.dueDate = null;
+            }
+            else {
+              $scope.dueDate = new Date(issue._source.dueDate);
+            }
 
             var d = $dialog.dialog($scope.editOpts);
             d.open().then(function(obj){
@@ -148,11 +159,13 @@ angular.module('elasticjs.controllers', [])
               var assignedTo = obj[1];
               var status = obj[2];
               var description = obj[3];
+              var dueDate = obj[4];
             
               var doc = ejs.Document("issues", "defect", id).source({
               assignedTo: assignedTo, 
               description: description,
-              status: status});
+              status: status,
+              dueDate: dueDate});
 
               doc.refresh(true).doUpdate(function() {
                 $scope.issuePoolResults = request
@@ -178,21 +191,29 @@ angular.module('elasticjs.controllers', [])
     });
 
 function CreateDialogCtrl($scope, dialog){
-  $scope.close = function(description){
-    dialog.close(description);
+  $scope.close = function(description, date){
+    $scope.description = description;
+    $scope.dueDate = date;
+
+    var retObj = [description, new Date(date)];
+    dialog.close(retObj);
+    
   };
 }
 
-function EditDialogCtrl($scope, dialog, description, assignedTo, status, id){
+function EditDialogCtrl($scope, dialog, description, assignedTo, status, id, dueDate){
   
   $scope.description = description;
   $scope.assignedTo = assignedTo;
   $scope.status = status;
   $scope.id = id;
+  $scope.dueDate = dueDate;
 
-  $scope.close = function(id, assignedTo, status, description){
+  $scope.stati = ["open", "working", "testing", "tested", "closed"];
 
-    var retObj = [id, assignedTo, status, description];
+  $scope.close = function(id, assignedTo, status, description, dueDate){
+
+    var retObj = [id, assignedTo, status, description, new Date(dueDate)];
 
     dialog.close(retObj);
   };

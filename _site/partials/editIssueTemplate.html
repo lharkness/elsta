@@ -12,7 +12,7 @@
           <tr>
                <td>Status</td>
                <td>
-                    <input type="text" id="status" ng-model="status" />
+                    <input type="text" id="status" ng-model="status" typeahead="status for status in stati"/>
                </td>
           </tr>
           <tr>
@@ -21,9 +21,16 @@
                     <input type="text" id="assignedTo" ng-model="assignedTo" />
                </td>
           </tr>
+          <tr>
+               <td>Due Date (optional)</td>
+               <td>                    
+                    <datepicker ng-model="dueDate" show-weeks="showWeeks" starting-day="1" date-disabled="disabled(date, mode)" min="minDate" max="'2015-06-22'">
+                    </datepicker>
+               </td>
+          </tr>
      </table>
      <input type="hidden" id="id" ng-model="id" />
 </div>
 <div class="modal-footer">
-     <button ng-click="close(id,assignedTo,status,description)" class="btn btn-primary" >Save Changes</button>
+     <button ng-click="close(id,assignedTo,status,description,dueDate)" class="btn btn-primary" >Save Changes</button>
 </div>
