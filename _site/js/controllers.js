@@ -155,27 +155,43 @@ angular.module('elasticjs.controllers', [])
             d.open().then(function(obj){
             if(obj)
             {
-              var id = obj[0];
-              var assignedTo = obj[1];
-              var status = obj[2];
-              var description = obj[3];
-              var dueDate = obj[4];
-            
-              var doc = ejs.Document("issues", "defect", id).source({
-              assignedTo: assignedTo, 
-              description: description,
-              status: status,
-              dueDate: dueDate});
+              if (obj.length == 1) {
+                var id = obj[0];
+                var doc = ejs.Document("issues", "defect", id);
+                doc.refresh(true).doDelete(function() {
+                  $scope.issuePoolResults = request
+                    .query(ejs.QueryStringQuery('assignedTo:empty'))
+                    .doSearch();
 
-              doc.refresh(true).doUpdate(function() {
-                $scope.issuePoolResults = request
-                .query(ejs.QueryStringQuery('assignedTo:empty'))
-                .doSearch();
+                  $scope.myWorkResults = request
+                    .query(ejs.QueryStringQuery('assignedTo:'+$scope.currentUser))
+                    .doSearch();
+                });
 
-                $scope.myWorkResults = request
-                .query(ejs.QueryStringQuery('assignedTo:'+$scope.currentUser))
-                .doSearch();
-              });
+              }
+              else {
+                var id = obj[0];
+                var assignedTo = obj[1];
+                var status = obj[2];
+                var description = obj[3];
+                var dueDate = obj[4];
+              
+                var doc = ejs.Document("issues", "defect", id).source({
+                assignedTo: assignedTo, 
+                description: description,
+                status: status,
+                dueDate: dueDate});
+
+                doc.refresh(true).doUpdate(function() {
+                  $scope.issuePoolResults = request
+                  .query(ejs.QueryStringQuery('assignedTo:empty'))
+                  .doSearch();
+
+                  $scope.myWorkResults = request
+                  .query(ejs.QueryStringQuery('assignedTo:'+$scope.currentUser))
+                  .doSearch();
+                });
+              }
             }
           });
 
@@ -201,7 +217,7 @@ function CreateDialogCtrl($scope, dialog){
   };
 }
 
-function EditDialogCtrl($scope, dialog, description, assignedTo, status, id, dueDate){
+function EditDialogCtrl($scope, $dialog, dialog, description, assignedTo, status, id, dueDate){
   
   $scope.description = description;
   $scope.assignedTo = assignedTo;
@@ -210,6 +226,24 @@ function EditDialogCtrl($scope, dialog, description, assignedTo, status, id, due
   $scope.dueDate = dueDate;
 
   $scope.stati = ["open", "working", "testing", "tested", "closed"];
+
+  $scope.delete = function(id) {
+
+    var btns = [{result:'cancel', label: 'Cancel'}, {result:'ok', label: 'OK', cssClass: 'btn-primary'}];
+    $dialog.messageBox('Confirm Delete', 'Are you sure you want to delete this issue?', btns )
+    .open()
+      .then(function(result){
+        if (result === 'cancel') {
+            dialog.close(null);
+        }
+        else {
+          var retObj = [id];
+
+          dialog.close(retObj);
+        }
+    });
+
+  }
 
   $scope.close = function(id, assignedTo, status, description, dueDate){
 
