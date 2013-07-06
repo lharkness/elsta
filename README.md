@@ -7,4 +7,4 @@ An ElasticSearch plugin which provides basic issue management functionality.  th
 
 To install, install Elasticsearch (http://elasticsearch.org), switch to the elasticsearch bin directory and execute plugin --install lharkness/elsta
 
-Modified2
+Modifiedr3
