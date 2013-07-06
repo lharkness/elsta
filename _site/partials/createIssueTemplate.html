@@ -3,7 +3,10 @@
 </div>
 <div class="modal-body">
 	<p>Enter description: <input ng-model="description" autofocus /></p>
+	<p>Enter Due Date (optional): 
+		<datepicker ng-model="dueDate" show-weeks="showWeeks" starting-day="1" date-disabled="disabled(date, mode)" min="minDate" max="'2015-06-22'">
+		</datepicker>
 </div>
-<div class="modal-footer">
-	<button ng-click="close(description)" class="btn btn-primary" >Create Issue</button>
+<div class<div class="modal-footer">
+	<button ng-click="close(description, dueDate)" class="btn btn-primary" >Create Issue</button>
 </div>
