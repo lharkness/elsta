@@ -16,6 +16,8 @@ angular.module('elasticjs.controllers', [])
             .types(type);
 
         $scope.currentUser = "";
+        $scope.predicate = '-status';
+        $scope.reverse = false;
 
         $scope.myWorkResults = request
                 .query(ejs.QueryStringQuery('assignedTo:'+$scope.currentUser))
@@ -91,6 +93,16 @@ angular.module('elasticjs.controllers', [])
             doc.refresh(true).doIndex(doSearch);
           });
         };
+
+        $scope.sortBy = function(predicate) {
+          $scope.predicate = predicate;
+        };
+
+        $scope.sortMe = function() {
+          return function(object) {
+            return object._source.status.order;
+          };
+        }
 
         $scope.createOpts = {
           backdrop: true,
@@ -175,6 +187,10 @@ angular.module('elasticjs.controllers', [])
                 var status = obj[2];
                 var description = obj[3];
                 var dueDate = obj[4];
+
+                if (!obj[4]) {
+                  dueDate = null;
+                }
               
                 var doc = ejs.Document("issues", "defect", id).source({
                 assignedTo: assignedTo, 
@@ -247,7 +263,12 @@ function EditDialogCtrl($scope, $dialog, dialog, description, assignedTo, status
 
   $scope.close = function(id, assignedTo, status, description, dueDate){
 
-    var retObj = [id, assignedTo, status, description, new Date(dueDate)];
+    var date = null;
+    if (dueDate) {
+      date = new Date(dueDate);
+    }
+
+    var retObj = [id, assignedTo, status, description, date];
 
     dialog.close(retObj);
   };
