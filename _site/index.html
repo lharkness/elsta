@@ -60,12 +60,14 @@
                 <tr>
                     <th>Description</th>
                     <th>Status</th>
+                    <th>Due Date</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="doc in myWorkResults.hits.hits" ng-click='editIssue(doc)'>  
                     <td>{{doc._source.description}}</td>
                     <td>{{doc._source.status}}</td>
+                    <td>{{displayDate(doc._source.dueDate)}}</td>
                 </tr>
             </tbody>
             </table>
@@ -76,12 +78,14 @@
                 <tr>
                     <th>Description</th>
                     <th>Status</th>
+                    <th>Due Date</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="doc in issuePoolResults.hits.hits" ng-click='editIssue(doc)' ng-click='editIssue(doc)'>
                     <td>{{doc._source.description}}</td>
                     <td>{{doc._source.status}}</td>
+                    <td>{{displayDate(doc._source.dueDate)}}</td>
                 </tr>
             </tbody>
         </tab> 
