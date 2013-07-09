@@ -220,6 +220,22 @@ angular.module('elasticjs.controllers', [])
 
         });
 
+        $scope.displayDate = function(dateString) {
+            
+              var date = Date.parse(dateString);
+              if (date) {
+                date = new Date(date);
+                var d = date.getDate();
+                var m = date.getMonth() + 1;
+                var y = date.getFullYear();
+                return '' + (m<=9 ? '0' + m : m) + '-' + (d <= 9 ? '0' + d : d) + '-' + y;
+              }
+              else {
+                return "";
+              }
+            
+        };
+
     });
 
 function CreateDialogCtrl($scope, dialog){

@@ -48,18 +48,19 @@
     <br/><br/></br>
     <div class="span10 well center offset2">
     <button ng-click="indexSampleDocs()" class="btn btn-inverse pull-right" ng-show="currentUser == 'Lee'">Generate Sample Data</button>
+
     <button ng-click="createIssue()" class="btn btn-inverse pull-right">Create Issue</button>
     <tabset>
         <tab heading='My Work'>
             <table class="table table-striped table-hover">
             <thead>
                 <tr>
-                    <th><a href="" ng-click="sortBy('Description')">Description</a></th>
-                    <th><a href="" ng-click="sortBy('Status')">Status</a></th>
+                    <th>Description</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="doc in myWorkResults.hits.hits | orderBy:sortMe()" ng-click='editIssue(doc)'>  
+                <tr ng-repeat="doc in myWorkResults.hits.hits" ng-click='editIssue(doc)'>  
                     <td>{{doc._source.description}}</td>
                     <td>{{doc._source.status}}</td>
                 </tr>
@@ -75,7 +76,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="doc in issuePoolResults.hits.hits | orderBy:predicate:reverse" ng-click='editIssue(doc)'`" ng-click='editIssue(doc)'>
+                <tr ng-repeat="doc in issuePoolResults.hits.hits" ng-click='editIssue(doc)' ng-click='editIssue(doc)'>
                     <td>{{doc._source.description}}</td>
                     <td>{{doc._source.status}}</td>
                 </tr>
